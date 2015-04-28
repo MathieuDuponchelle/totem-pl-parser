@@ -33,12 +33,12 @@
 gboolean
 totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 {
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 	const char *args[] = {
 #ifdef UNINSTALLED_TESTS
-		"../totem-pl-parser-videosite",
+		"../youtube_dl_url_resolver.py",
 #else
-		LIBEXECDIR "/totem-pl-parser-videosite",
+		LIBEXECDIR "/youtube_dl_url_resolver.py",
 #endif
 		"--check",
 		"--url",
@@ -65,7 +65,7 @@ totem_pl_parser_is_videosite (const char *uri, gboolean debug)
 	return (g_strcmp0 (out, "TRUE") == 0);
 #else
 	return FALSE;
-#endif /* HAVE_QUVI */
+#endif /* HAVE_YOUTUBE_DL */
 }
 
 #ifndef TOTEM_PL_PARSER_MINI
@@ -77,9 +77,9 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 			       TotemPlParseData *parse_data,
 			       gpointer data)
 {
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 	const char *args[] = {
-		LIBEXECDIR "/totem-pl-parser-videosite",
+		LIBEXECDIR "/youtube_dl_url_resolver.py",
 		"--url",
 		NULL,
 		NULL
@@ -104,6 +104,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 		      NULL,
 		      NULL,
 		      NULL);
+
 	if (totem_pl_parser_is_debugging_enabled (parser))
 		g_print ("Parsing videosite for URI '%s' returned '%s'\n", uri, out);
 
@@ -140,7 +141,7 @@ totem_pl_parser_add_videosite (TotemPlParser *parser,
 	return TOTEM_PL_PARSER_RESULT_SUCCESS;
 #else
 	return TOTEM_PL_PARSER_RESULT_UNHANDLED;
-#endif /* !HAVE_QUVI */
+#endif /* !HAVE_YOUTUBE_DL */
 }
 
 #endif /* !TOTEM_PL_PARSER_MINI */

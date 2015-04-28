@@ -193,7 +193,7 @@ test_data_get_data (const char *uri, guint *len)
 	return buffer;
 }
 
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 static void
 test_videosite (void)
 {
@@ -497,7 +497,7 @@ parser_test_get_playlist_field (const char *uri,
 static void
 test_image_link (void)
 {
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 	char *uri;
 
 	/* From http://www.101greatgoals.com/feed/ */
@@ -507,10 +507,11 @@ test_image_link (void)
 #endif
 }
 
+#if 0
 static void
 test_no_url_podcast (void)
 {
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 	char *uri;
 
 	/* From http://feeds.guardian.co.uk/theguardian/football/rss */
@@ -519,6 +520,7 @@ test_no_url_podcast (void)
 	g_free (uri);
 #endif
 }
+#endif
 
 static void
 test_itms_parsing (void)
@@ -908,7 +910,8 @@ test_parsing_m3u_streaming (void)
 	g_free (uri);
 }
 
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
+#if 0
 static void
 test_parsing_rss_id (void)
 {
@@ -926,7 +929,8 @@ test_parsing_rss_link (void)
 	g_assert_cmpstr (parser_test_get_entry_field (uri, TOTEM_PL_PARSER_FIELD_URI), ==, "http://www.guardian.co.uk/technology/audio/2011/may/03/tech-weekly-art-love-bin-laden");
 	g_free (uri);
 }
-#endif /* HAVE_QUVI */
+#endif
+#endif /* HAVE_YOUTUBE_DL */
 
 static void
 test_parsing_not_asx_playlist (void)
@@ -1264,7 +1268,12 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsability", test_parsability);
 		g_test_add_func ("/parser/image_link", test_image_link);
 		g_test_add_func ("/parser/m3u_audio_track", test_m3u_audio_track);
+
+#if 0
+    /* Skipping, youtube-dl doesn't have a guardian extractor */
 		g_test_add_func ("/parser/no_url_podcast", test_no_url_podcast);
+#endif
+
 		g_test_add_func ("/parser/xml_is_text_plain", test_xml_is_text_plain);
 		g_test_add_func ("/parser/compressed_content_encoding", test_compressed_content_encoding);
 		g_test_add_func ("/parser/parsing/hadess", test_parsing_hadess);
@@ -1284,11 +1293,14 @@ main (int argc, char *argv[])
 		g_test_add_func ("/parser/parsing/live_streaming", test_parsing_live_streaming);
 		g_test_add_func ("/parser/parsing/xml_mixed_cdata", test_parsing_xml_mixed_cdata);
 		g_test_add_func ("/parser/parsing/m3u_streaming", test_parsing_m3u_streaming);
-#ifdef HAVE_QUVI
+#ifdef HAVE_YOUTUBE_DL
 		g_test_add_func ("/parser/videosite", test_videosite);
+#if 0
+    /* Skipping, youtube-dl doesn't have a guardian extractor */
 		g_test_add_func ("/parser/parsing/rss_id", test_parsing_rss_id);
 		g_test_add_func ("/parser/parsing/rss_link", test_parsing_rss_link);
-#endif /* HAVE_QUVI */
+#endif
+#endif /* HAVE_YOUTUBE_DL */
 		g_test_add_func ("/parser/parsing/not_asx_playlist", test_parsing_not_asx_playlist);
 		g_test_add_func ("/parser/parsing/not_really_php", test_parsing_not_really_php);
 		g_test_add_func ("/parser/parsing/not_really_php_but_html_instead", test_parsing_not_really_php_but_html_instead);

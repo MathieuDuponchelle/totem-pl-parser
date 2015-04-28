@@ -1810,8 +1810,8 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 	if (!parse_data->recurse && parse_data->recurse_level > 0)
 		return TOTEM_PL_PARSER_RESULT_UNHANDLED;
 
-#ifdef HAVE_QUVI
-	/* Should we try to parse it with quvi? */
+#ifdef HAVE_YOUTUBE_DL
+	/* Should we try to parse it with youtube-dl? */
 	if (g_file_has_uri_scheme (file, "http")) {
 		char *url;
 		url = g_file_get_uri (file);
@@ -1822,7 +1822,7 @@ totem_pl_parser_parse_internal (TotemPlParser *parser,
 		}
 		g_free (url);
 	}
-#endif /* HAVE_QUVI */
+#endif /* HAVE_YOUTUBE_DL */
 
 	/* In force mode we want to get the data */
 	if (parse_data->force != FALSE) {
