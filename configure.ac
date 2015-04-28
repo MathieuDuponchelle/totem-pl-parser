@@ -45,7 +45,6 @@ AC_PATH_PROG([GLIB_MKENUMS],[glib-mkenums])
 # Requirements
 GLIB_REQS=2.31.0
 GIO_REQS=2.24.0
-QUVI_REQS=0.9.1
 LIBARCHIVE_REQS=3.0
 LIBSOUP_REQS=2.43.0
 
@@ -103,29 +102,8 @@ else
 fi
 
 ##################################
-# Checking quvi dependency
+# Checking youtube-dl dependency
 ##################################
-
-QUVI=""
-AC_ARG_ENABLE(quvi,
-	      AS_HELP_STRING([--enable-quvi],
-			     [Enable libquvi support (default is auto).]),
-			     [],
-			     [enable_quvi=auto])
-if test "x$enable_quvi" != "xno" ; then
-	PKG_CHECK_MODULES(QUVI,
-			  libquvi-0.9 >= $QUVI_REQS glib-2.0,
-			  [have_quvi=yes], [have_quvi=no])
-	if test "x$enable_quvi" = "xyes" -a "x$have_quvi" = "xno" ; then
-		AC_MSG_ERROR([Quvi support requested but not available.])
-	fi
-	if test "x$have_quvi" = "xyes" ; then
-		QUVI="libquvi-0.9"
-		AC_DEFINE(HAVE_QUVI, 1, [libquvi available in the system])
-	fi
-fi
-AC_SUBST(QUVI, $QUVI)
-AM_CONDITIONAL([HAVE_QUVI], [test "$have_quvi" = "yes"])
 
 PYTHON="python2"
 have_youtube_dl="no"
@@ -271,12 +249,6 @@ docs/reference/version.xml
 
 
 AC_OUTPUT
-
-if test "x$have_quvi" = "xyes"; then
-	AC_MSG_NOTICE([** Quvi video link parsing enabled])
-else
-	AC_MSG_NOTICE([   Quvi video link parsing disabled])
-fi
 
 if test "x$have_youtube_dl" = "xyes"; then
 	AC_MSG_NOTICE([** youtube-dl video link parsing enabled])

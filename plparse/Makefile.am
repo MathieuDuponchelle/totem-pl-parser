@@ -182,13 +182,6 @@ EXTRA_DIST =				\
 	plparser.symbols		\
 	plparser-mini.symbols
 
-if HAVE_QUVI
-libexec_PROGRAMS = totem-pl-parser-videosite
-totem_pl_parser_videosite_SOURCES = videosite-parser.c
-totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"\"
-totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
-endif
-
 if HAVE_YOUTUBE_DL
 libexec_SCRIPTS = youtube_dl_url_resolver.py
 endif
