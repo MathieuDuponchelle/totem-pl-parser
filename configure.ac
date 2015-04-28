@@ -127,6 +127,39 @@ fi
 AC_SUBST(QUVI, $QUVI)
 AM_CONDITIONAL([HAVE_QUVI], [test "$have_quvi" = "yes"])
 
+PYTHON="python2"
+have_youtube_dl="no"
+AC_ARG_ENABLE(youtube-dl,
+              AS_HELP_STRING([--enable-youtube-dl],
+              [Enable youtube-dl support (default is auto).]),
+	      [],
+	      [enable_youtube_dl=auto])
+
+if test "x$enable_youtube_dl" != "xno" ; then
+	AM_PATH_PYTHON([2], [have_python="yes"], [have_python="no"])
+	if test "x$have_python" = "xyes" ; then
+		AC_MSG_CHECKING([for the youtube_dl Python package])
+		ac_youtubedl_result=`$PYTHON -c "import youtube_dl" 2>&1`
+		if test -z "$ac_youtubedl_result"; then
+			AC_MSG_RESULT([yes])
+			have_youtube_dl="yes"
+		else
+			AC_MSG_RESULT([no])
+			have_youtube_dl="no"
+		fi
+	fi
+
+	if test "x$enable_youtube_dl" = "xyes" -a "x$have_youtube_dl" = "xno" ; then
+		AC_MSG_ERROR([youtube-dl support requested but not available.])
+	fi
+	if test "x$have_youtube_dl" = "xyes" ; then
+		AC_DEFINE(HAVE_YOUTUBE_DL, 1, [youtube-dl available in the system])
+	fi
+fi
+
+AM_CONDITIONAL([HAVE_YOUTUBE_DL], [test "x$have_youtube_dl" = "xyes"])
+
+
 ##################################
 # Checking libarchive dependency
 ##################################
@@ -243,6 +276,12 @@ if test "x$have_quvi" = "xyes"; then
 	AC_MSG_NOTICE([** Quvi video link parsing enabled])
 else
 	AC_MSG_NOTICE([   Quvi video link parsing disabled])
+fi
+
+if test "x$have_youtube_dl" = "xyes"; then
+	AC_MSG_NOTICE([** youtube-dl video link parsing enabled])
+else
+	AC_MSG_NOTICE([   youtube-dl video link parsing disabled])
 fi
 if test "x$have_libarchive" = "xyes"; then
 	AC_MSG_NOTICE([** ISO detection with libarchive enabled])

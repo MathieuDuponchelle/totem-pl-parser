@@ -189,6 +189,10 @@ totem_pl_parser_videosite_CFLAGS = $(QUVI_CFLAGS) -DLIBEXECDIR=\""$(libexecdir)"
 totem_pl_parser_videosite_LDADD = $(QUVI_LIBS)
 endif
 
+if HAVE_YOUTUBE_DL
+libexec_SCRIPTS = youtube_dl_url_resolver.py
+endif
+
 # Introspection
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
